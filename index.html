@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SQLight — Local-First AI SQL Copilot for VS Code</title>
+<meta name="description" content="AI SQL autocomplete, error-fixing and query explanations inside VS Code. Your schema never leaves your machine — runs on local Ollama.">
+<meta property="og:title" content="SQLight — Local-First AI SQL Copilot">
+<meta property="og:description" content="Write SQL faster. Fix errors instantly. Your schema never leaves your machine.">
+<meta property="og:type" content="website">
+<style>
+  :root {
+    --bg: #0d1117;
+    --card: #161b22;
+    --border: #30363d;
+    --text: #e6edf3;
+    --muted: #8b949e;
+    --accent: #3fb950;
+    --accent2: #58a6ff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.6;
+    display: flex; flex-direction: column; min-height: 100vh;
+  }
+  .container { max-width: 860px; margin: 0 auto; padding: 0 24px; }
+  header { padding: 48px 0 24px; }
+  .logo { display: flex; align-items: center; gap: 10px; color: var(--muted); font-weight: 600; }
+  .logo .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--accent); box-shadow: 0 0 12px var(--accent); }
+  h1 { font-size: 2.6rem; line-height: 1.15; margin: 28px 0 16px; letter-spacing: -0.02em; }
+  h1 .grad { background: linear-gradient(90deg, var(--accent), var(--accent2)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+  .sub { font-size: 1.2rem; color: var(--muted); max-width: 640px; }
+  .privacy-badge {
+    display: inline-flex; align-items: center; gap: 8px; margin-top: 20px;
+    padding: 8px 16px; border: 1px solid var(--accent); border-radius: 999px;
+    color: var(--accent); font-size: 0.85rem; font-weight: 600;
+  }
+  .cta-section { padding: 40px 0; }
+  .cta-card {
+    background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+    padding: 32px; display: flex; flex-direction: column; gap: 16px;
+  }
+  .cta-card h2 { font-size: 1.4rem; }
+  form { display: flex; flex-direction: column; gap: 12px; }
+  .row { display: flex; gap: 10px; flex-wrap: wrap; }
+  input[type=email] {
+    flex: 1; min-width: 240px; padding: 12px 16px; border-radius: 8px;
+    border: 1px solid var(--border); background: var(--bg); color: var(--text); font-size: 1rem;
+  }
+  button {
+    padding: 12px 24px; border-radius: 8px; border: none; cursor: pointer;
+    background: var(--accent); color: #0d1117; font-weight: 700; font-size: 1rem;
+  }
+  button:hover { filter: brightness(1.1); }
+  .features { padding: 40px 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 16px; }
+  .feature {
+    background: var(--card); border: 1px solid var(--border); border-radius: 10px; padding: 20px;
+  }
+  .feature h3 { font-size: 1.05rem; margin-bottom: 8px; }
+  .feature p { color: var(--muted); font-size: 0.92rem; }
+  .code {
+    background: #010409; border: 1px solid var(--border); border-radius: 8px;
+    padding: 16px; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.9rem;
+    overflow-x: auto;
+  }
+  .code .hl { color: var(--accent); }
+  .code .cm { color: #6e7681; }
+  .preorder { padding: 24px 0 48px; }
+  .preorder-card {
+    background: var(--card); border: 1px solid var(--accent); border-radius: 12px;
+    padding: 28px; display: flex; align-items: center; gap: 24px; flex-wrap: wrap;
+    justify-content: space-between;
+  }
+  .preorder .price { font-size: 2rem; font-weight: 800; color: var(--accent); }
+  .preorder .old-price { color: var(--muted); text-decoration: line-through; font-size: 1.2rem; }
+  .preorder .desc { color: var(--muted); font-size: 0.95rem; }
+  .badge { background: var(--accent); color: #0d1117; font-weight: 700; font-size: 0.75rem; padding: 4px 10px; border-radius: 999px; }
+  footer { margin-top: auto; padding: 32px 0; border-top: 1px solid var(--border); color: var(--muted); font-size: 0.85rem; }
+  .note { color: var(--muted); font-size: 0.85rem; margin-top: 8px; }
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <div class="logo"><span class="dot"></span> SQLight</div>
+    <h1>Write SQL faster. <span class="grad">Your schema never leaves your machine.</span></h1>
+    <p class="sub">AI SQL copilot for VS Code — schema-aware autocomplete, instant error-fixing, and plain-English query generation. Runs 100% locally on your own Ollama.</p>
+    <div class="privacy-badge">🔒 LOCAL-FIRST — no cloud, no data sent anywhere</div>
+  </header>
+
+  <section class="cta-section">
+    <div class="cta-card">
+      <h2>Join Early Access</h2>
+      <p style="color:var(--muted)">Get the extension when it ships + lifetime updates. First 100 members get founder pricing.</p>
+      <form id="waitlist" action="https://adamshadid.gumroad.com/l/vgwrpqd" method="get">
+        <div class="row">
+          <input type="email" name="email" placeholder="you@example.com" required>
+          <button type="submit">Get Early Access</button>
+        </div>
+      </form>
+      <p class="note">We'll only email you about SQLight. No spam, no list selling.</p>
+    </div>
+  </section>
+
+  <section class="features">
+    <div class="feature">
+      <h3>⚡ Schema-aware autocomplete</h3>
+      <p>Knows your tables, columns, foreign keys and types. Suggests real identifiers — not random keywords.</p>
+    </div>
+    <div class="feature">
+      <h3>🔧 Instant error fixing</h3>
+      <p>"column usr_id does not exist" → explains what's wrong and offers the correct query.</p>
+    </div>
+    <div class="feature">
+      <h3>💬 Plain English → SQL</h3>
+      <p>"Find users who signed up in the last 30 days with at least 3 orders" → correct, schema-aware SQL.</p>
+    </div>
+    <div class="feature">
+      <h3>🔒 Local-first privacy</h3>
+      <p>Runs on your own Ollama. Schema and data never leave your machine. No cloud AI, no data leaks.</p>
+    </div>
+  </section>
+
+  <section>
+    <div class="code">
+      <span class="cm">-- Type, and SQLight knows your schema:</span><br>
+      <span class="hl">SELECT</span> id, em<span class="hl">↵</span><br>
+      <span class="cm">└─ email · email_verified · employee_id</span><br><br>
+      <span class="cm">-- Ask in plain English:</span><br>
+      <span class="hl">Find users</span> signed up last 30 days with 3+ orders<br>
+      <span class="cm">└─ generates schema-aware SQL, explains what it does</span>
+    </div>
+  </section>
+
+  <section class="preorder">
+    <div class="preorder-card">
+      <div>
+        <span class="badge">FOUNDER OFFER</span>
+        <h2 style="margin:12px 0 8px">Founder Lifetime Access</h2>
+        <p class="desc">Pay once, keep forever. Includes all future updates. First 100 members only.</p>
+      </div>
+      <div style="text-align:right">
+        <div><span class="price">$49</span> <span class="old-price">$99</span></div>
+        <a href="https://adamshadid.gumroad.com/l/mbqyerz" style="display:inline-block;margin-top:12px;padding:12px 24px;background:var(--accent);color:#0d1117;font-weight:700;border-radius:8px;text-decoration:none">Pre-order Now →</a>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="container">
+      <p>SQLight — built by an AI agent, tested by developers. Free tier: schema-aware autocomplete + limited local AI. Pro: everything, unlimited.</p>
+      <p style="margin-top:8px">© 2026 SQLight</p>
+    </div>
+  </footer>
+</div>
+</body>
+</html>
